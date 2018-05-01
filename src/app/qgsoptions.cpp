@@ -383,6 +383,9 @@ QgsOptions::QgsOptions( QWidget *parent, Qt::WindowFlags fl, const QList<QgsOpti
   //wms search server
   leWmsSearch->setText( mSettings->value( QStringLiteral( "/qgis/WMSSearchUrl" ), "http://geopole.org/wms/search?search=%1&type=rss" ).toString() );
 
+  // log URL network events for userspace debugging
+  mLogNetworkRequestsChkBx->setChecked( mSettings->value( QStringLiteral( "/qgis/networkAndProxy/logNetworkRequest" ), false ).toBool() );
+
   // set the attribute table default filter
   cmbAttrTableBehavior->clear();
   cmbAttrTableBehavior->addItem( tr( "Show all features" ), QgsAttributeTableFilterModel::ShowAll );
@@ -1280,6 +1283,9 @@ void QgsOptions::saveOptions()
     proxyExcludeString += mExcludeUrlListWidget->item( i )->text();
   }
   mSettings->setValue( QStringLiteral( "proxy/proxyExcludedUrls" ), proxyExcludeString );
+
+  // log URL network events for userspace debugging
+  mSettings->setValue( QStringLiteral( "/qgis/networkAndProxy/logNetworkRequest" ), mLogNetworkRequestsChkBx->isChecked() );
 
   QgisApp::instance()->namUpdate();
 

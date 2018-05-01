@@ -204,6 +204,11 @@ QNetworkReply *QgsNetworkAccessManager::createRequest( QNetworkAccessManager::Op
 #endif
 
   emit requestAboutToBeCreated( op, req, outgoingData );
+  if ( s.value( QStringLiteral( "/qgis/networkAndProxy/logNetworkRequest" ), false ).toBool() )
+  {
+    QString logMsg = tr( "Network request : %1" ).arg( req.url().toString() );
+    QgsMessageLog::logMessage( logMsg, tr( "Network" ), Qgis::Info );
+  }
   QNetworkReply *reply = QNetworkAccessManager::createRequest( op, req, outgoingData );
 
   emit requestCreated( reply );
